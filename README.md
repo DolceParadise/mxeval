@@ -79,6 +79,13 @@ for lang in mbcpp mbcsp mbgp mbjp mbjsp mbkp mbphp mbplp mbpp mbrbp mbscp mbswp 
   do evaluate_functional_correctness --problem_file data/mbxp/${lang}_release_v1.jsonl data/mbxp/examples/${lang}_samples.jsonl;
 done
 ```
+
+To run in a sandbox environment, build the docker image and run the evaluation script. For example, for JAVA MBJP evaluation, run the following commands:
+```
+docker build -t mxeval .
+docker run mxeval data/mbxp/examples/mbjp_samples.jsonl --problem_file data/mbxp/mbjp_release_v1.2.jsonl
+```
+
 You can check the programming-language dependency installation by running the above example for each MBXP dataset. You should obtain the following results for the mbxp_samples.jsonl files provided:
 
 
