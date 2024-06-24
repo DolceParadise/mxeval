@@ -1,20 +1,29 @@
-# Use a newer Python as generated code can use new features
-FROM python:3.10-slim
+# Use the latest Debian image as the base
+FROM debian:latest
 
-# Install git
-RUN apt-get update && apt-get install -y git
+# Install necessary dependencies
+RUN apt-get update && \
+    apt-get install -y wget gnupg git python3 python3-pip python3-venv default-jre default-jdk && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# Upgrade to latest pip
+# Create and activate a virtual environment
+RUN python3 -m venv /opt/venv
+
+# Set the environment variables for the virtual environment
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Upgrade to latest pip within the virtual environment
 RUN pip install --upgrade pip
 
 # Copy your repository into the Docker image
-COPY . /mxeval 
-
-# Install your package
-RUN pip install -e /mxeval
+COPY . /mxeval
 
 # Set the working directory
-WORKDIR /mxeval 
+WORKDIR /mxeval
+
+# Install your package within the virtual environment
+RUN pip install -e /mxeval
 
 # Set the entrypoint
 ENTRYPOINT ["evaluate_functional_correctness"]
